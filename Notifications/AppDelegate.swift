@@ -42,11 +42,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func scheduleNotification(notificationType: String) {
         let content = UNMutableNotificationContent()
+        let userAction  = "User Action"
         
         content.title = notificationType
         content.body = "This is example how to create \(notificationType)"
         content.sound = .default
         content.badge = 1
+        content.categoryIdentifier = userAction
         
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
         let identidier = "Local Notification"
@@ -57,6 +59,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print("Error \(error.localizedDescription)")
             }
         }
+        
+        let snoozeAction = UNNotificationAction(identifier: "Snooze", title: "Snooze", options: [])
+        let deleteAction = UNNotificationAction(identifier: "Delete", title: "Delete", options: [.destructive])
+        let category = UNNotificationCategory(identifier: userAction,
+                                              actions: [snoozeAction, deleteAction],
+                                              intentIdentifiers: [],
+                                              options: [])
+        notificationCenter.setNotificationCategories([category])
+        
     }
 }
 
